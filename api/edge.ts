@@ -1,4 +1,4 @@
-import { extname } from 'path'
+/// <reference lib="dom" />
 const extname_R_content_type = extname_R_content_type__new()
 const ASSETS_BRIANTAKITA_ME__BUCKET_URL = process.env.ASSETS_BRIANTAKITA_ME__BUCKET_URL
 export const config = {
@@ -6,6 +6,7 @@ export const config = {
 }
 export default async function handler(req:Request) {
 	const { pathname } = new URL(req.url)
+	const ext = /.*(\.*)$/.exec(pathname)?.[1]
 	const fetch_response = await fetch(`${ASSETS_BRIANTAKITA_ME__BUCKET_URL}${pathname}`)
 	return new Response(
 		fetch_response.body,
@@ -14,14 +15,15 @@ export default async function handler(req:Request) {
 			headers: {
 				'content-type':
 					fetch_response.headers.get('content-type')
-					|| extname_R_content_type[extname(pathname)],
+					|| ext && extname_R_content_type[ext]
+					|| 'text/plain',
 				'cache-control': 'public, s-maxage=1200, stale-while-revalidate=600',
 			},
 		}
 	)
 }
 export function extname_R_content_type__new():Record<string, string> {
-  return Object.freeze({
+	return Object.freeze({
 		'.aac': 'audio/aac',
 		'.abw': 'application/x-abiword',
 		'.arc': 'application/x-freearc',
