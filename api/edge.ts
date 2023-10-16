@@ -1,4 +1,4 @@
-import { extname } from 'path/posix'
+import { extname } from 'path'
 const extname_R_content_type = extname_R_content_type__new()
 const ASSETS_BRIANTAKITA_ME__BUCKET_URL = process.env.ASSETS_BRIANTAKITA_ME__BUCKET_URL
 export const config = {
