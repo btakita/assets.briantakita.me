@@ -11,8 +11,9 @@ export default async function handler(req:Request) {
 	return new Response(
 		fetch_response.body,
 		{
-			status: 200,
+			status: fetch_response.status,
 			headers: {
+				...fetch_response.headers,
 				'content-type':
 					fetch_response.headers.get('content-type')
 					|| ext && extname_R_content_type[ext]
